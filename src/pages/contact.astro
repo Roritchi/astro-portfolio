@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+import ContactCTA from '../components/ContactCTA.astro';
+import PortfolioPreview from '../components/PortfolioPreview.astro';
+import Hero from '../components/Hero.astro';
+import Grid from '../components/Grid.astro';
+
+const projects = (await getCollection('work')).sort(
+	(a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+);
+---
+
+<BaseLayout
+	title="Kontakt Formular"
+	description="Schreibe mir deine Nachricht!"
+>
+	<div class="stack gap-20">
+		<main class="wrapper stack gap-8">
+            <form action="https://api.web3forms.com/submit" method="POST">
+
+                <input type="hidden" name="access_key" class="encrypted_field" value="ZWY1ZDk3NDYtODE5Ny00OWY0LThlNTItNGQ3ZjlkOWFlM2Zh">
+                <input type="hidden" name="redirect" value="http://localhost:4321/thankyou">
+                
+                <div class="field">
+                    <label class="label" for="fullName">Vor- und Zuname *</label>
+                    <div class="control">
+                        <input class="input" id="fullName" name="fullName" type="text" required />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="email">E-Mail *</label>
+                    <div class="control">
+                        <input class="input" id="email" name="email" type="email" required />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="company">Firma (optional)</label>
+                    <div class="control">
+                        <input class="input" id="company" name="company" type="text" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="online-presence">Bereits bestehende Online Präsenz (z.B. Instagram, Facebook, etc...) (optional)</label>
+                    <div class="control">
+                        <input class="input" id="online-presence" name="online-presence" type="text" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="subject">Betreff (optional)</label>
+                    <div class="control">
+                        <input class="input" id="subject" name="subject" type="text" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="message">Nachricht *</label>
+                    <div class="control">
+                        <textarea class="textarea" id="message" name="message" required></textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" required />
+                            Ich bestätige hiermit, dass ich damit einverstanden bin, dass meine eingegebenen Daten verarbeitet werden, damit ich eine Antwort erhalten kann.
+                        </label>
+                    </div>
+                </div>
+
+                <input type="checkbox" name="botcheck" checked style="display: none;" />
+
+                <div class="field is-grouped">
+                    <div class="control">
+                      <button type="submit" class="button is-link">Absenden</button>
+                    </div>
+                    <div class="control">
+                      <a href="/" class="button is-link is-light">Abbruch</a>
+                    </div>
+                  </div>
+            </form>
+		</main>
+	</div>
+</BaseLayout>
+
+<style>
+    .label {
+        color: currentcolor;
+    }
+</style>
+
+
+<script>
+    for(let el of document.getElementsByClassName('encrypted_field')) {
+        el.value = atob(el.value);
+    }
+    document.querySelector('[name="botcheck"]').checked = false;
+</script>
