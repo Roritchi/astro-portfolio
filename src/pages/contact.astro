@@ -92,7 +92,7 @@ const projects = (await getCollection('work')).sort(
 </style>
 
 
-<script>
+<script is:inline>
     for(let el of document.getElementsByClassName('encrypted_field')) {
         el.value = atob(el.value);
     }
